@@ -1,0 +1,65 @@
+<div [ngClass]="{'block': isSidebarOpen, 'hidden': !isSidebarOpen}" class="fixed inset-0 bg-black opacity-50 z-30 md:hidden" (click)="toggleSidebar()"></div>
+<aside id="logo-sidebar" [ngClass]="{'-translate-x-full': !isSidebarOpen, 'translate-x-0': isSidebarOpen}" class="flex flex-col fixed top-0 left-0 z-40 w-64 h-screen transition-transform md:translate-x-0" aria-label="Sidebar">
+    <div class="flex-1 px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+        
+        <a href="#" class="flex items-center ps-2.5 mb-5">
+            <img [src]="images.logoNg" class="rounded-lg" alt="Logo" class="sm:h-7" width="30px">
+            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">&nbsp; HelpDesk</span>
+        </a>
+        <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+            <li>
+                <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <fa-icon class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" [icon]="['fas', 'chalkboard']" size="lg"></fa-icon>
+                    <span class="ms-3">Home</span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Tickets dropdown -->
+        <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+            <li>
+                <label class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group items-center cursor-pointer">
+                    <input type="checkbox" value="" class="sr-only peer" (click)="toggleDarkMode()" [checked]="savedTheme === 'dark' ? true:false">
+                    <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                    <span class="flex-1 ms-3 whitespace-nowrap">
+                        <fa-icon class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" [icon]="icon" size="lg"></fa-icon>
+                    </span>
+                </label>
+            </li>
+            <li>
+                <a class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <fa-icon class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" [icon]="['fas', 'circle-user']" size="lg"></fa-icon>
+                    <span class="flex-1 ms-3 whitespace-nowrap">{{userName}}</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group" (click)="openModal()">
+                    <fa-icon class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" [icon]="['fas', 'panorama']" size="lg"></fa-icon>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Fondo de pantalla</span>
+                </a>
+            </li>
+            
+            <li>
+                <a class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group" (click)="logOut()">
+                    <fa-icon class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" [icon]="['fas', 'right-from-bracket']" size="lg"></fa-icon>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Log Out</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                    <fa-icon class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" [icon]="['fas', 'circle-info']" size="lg"></fa-icon>
+                    <span class="ms-3">Help</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <app-footer></app-footer>
+</aside>
+<button (click)="toggleSidebar()" data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+    <span class="sr-only">Open sidebar</span>
+    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+    <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+    </svg>
+</button>
+
+<app-custom-modal [isModalOpen]="isModalOpen" (close)="closeModal()"></app-custom-modal>
