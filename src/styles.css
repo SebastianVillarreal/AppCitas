@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+/* angular-cli file: src/styles.css */
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -92,3 +95,4 @@ a {
 .fileLines {
     @apply mr-2 text-indigo-800 dark:bg-gray-700 dark:text-indigo-400 border-indigo-400
 }
+

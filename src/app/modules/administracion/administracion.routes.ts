@@ -12,6 +12,11 @@ export const routes: Routes = [
                 redirectTo:'personas',
                 pathMatch:'full'
             },
+            {
+                path: 'calendario',
+                loadChildren:() => import('./pages/calendario/calendario.routes').then(m => m.routes),
+                title: nameApp + 'Calendario de citas'
+            }
            
         ]
     },
