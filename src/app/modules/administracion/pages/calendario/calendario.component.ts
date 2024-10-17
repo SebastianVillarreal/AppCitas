@@ -1,41 +1,18 @@
-import { Component , signal, ChangeDetectorRef } from '@angular/core';
+import { Component , signal, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
-//Impor fullCalendar
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, EventClickArg, EventApi, EventInput } from '@fullcalendar/core';
-// import de los plugin;
+import { CalendarOptions, EventApi, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-
-//Importar el idioma español
 import esLocale from '@fullcalendar/core/locales/es';
 
+import { CitasService } from '@Services';
+import { HorarioOcupadoModel } from '@Models/HorarioOcupado';
 
-//Eventos iniciales prueba
-const TODAY_STR = new Date().toISOString().replace(/T.*$/, '');
-
-const initialEvents: EventInput[] = [
-  {
-    id: '1',
-    title: 'All-day event',
-    start: TODAY_STR
-  },
-  {
-    id: '2',
-    title: 'Timed event',
-    start: TODAY_STR + 'T00:00:00',
-    end: TODAY_STR + 'T03:00:00'
-  },
-  {
-    id: '3',
-    title: 'Timed event',
-    start: TODAY_STR + 'T12:00:00',
-    end: TODAY_STR + 'T15:00:00'
-  }
-]
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -46,7 +23,23 @@ const initialEvents: EventInput[] = [
   styleUrl: './calendario.component.css',
 })
 export class CalendarioComponent {
+  eventosList: EventInput[] = [];
   calendarVisible = signal(true);
+  currentEvents = signal<EventApi[]>([]);
+
+  constructor(private changeDetector: ChangeDetectorRef) {
+  }
+  private citaService = inject(CitasService);
+
+  fechasOcupadasList: string[] = [];
+  horariosOcupadosList: HorarioOcupadoModel[] = [];
+
+
+  ngOnInit()
+  {
+    this.getFechasOcupadas();
+  }
+
   calendarOptions = signal<CalendarOptions>({
     plugins: [
       dayGridPlugin,
@@ -59,7 +52,7 @@ export class CalendarioComponent {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
     initialView: 'dayGridMonth',
-    initialEvents:initialEvents,
+    events: [],
     weekends: true,
     editable: true,
     selectable: true,
@@ -69,99 +62,58 @@ export class CalendarioComponent {
     locale: 'es'
   });
 
-  currentEvents = signal<EventApi[]>([]);
-
-  constructor(private changeDetector: ChangeDetectorRef) {
+  getFechasOcupadas()
+  {
+    this.citaService.GetFechasOcupadas().subscribe((data) => {
+      this.fechasOcupadasList = data.response.map(fechaCompleta => fechaCompleta.split(' ')[0]);
+  
+      const requests = this.fechasOcupadasList.map(fecha => this.citaService.GetHorariosOcuapdosPorFecha(fecha));
+  
+      forkJoin(requests).subscribe((responses) => {
+        this.horariosOcupadosList = [];
+        this.eventosList = [];
+  
+        responses.forEach((response, index) => {
+          const fecha = this.fechasOcupadasList[index];
+          response.response.forEach((horario: HorarioOcupadoModel) => {
+            this.getCalendarEvents(fecha, horario);
+          });
+        });
+  
+        this.updateCalendarEvents();
+      });
+    });
   }
 
-  // view: CalendarView = CalendarView.Month;
-  // CalendarView = CalendarView;
+  getHorariosOcupadosPorFecha(Fecha: string)
+  {
+    this.citaService.GetHorariosOcuapdosPorFecha(Fecha).subscribe((data) => {
+      this.horariosOcupadosList =[...this.horariosOcupadosList, ...data.response];
 
-  // viewDate: Date = new Date();
-  // activeDayIsOpen: boolean = false; 
-  // refresh = new Subject<void>();
+      this.horariosOcupadosList.forEach((horario) => {
+        this.getCalendarEvents(Fecha, horario)
+      }) 
 
-  // Las acciones disponibles para cada evento o cita programada (editar y eliminar)
-  // actions: CalendarEventAction[] = [
-  //   {
-  //     label: '<i class="fas fa-fw fa-pencil-alt"></i>',
-  //     a11yLabel: 'Edit',
-  //     onClick: ({ event }: { event: CalendarEvent }): void => {
-  //       this.handleEvent('Edited', event)
-  //     },
-  //   },
-  //   {
-  //     label: '<i class="fas fa-fw fa-trash-alt"></i>',
-  //     a11yLabel: 'Delete',
-  //     onClick: ({ event }: { event: CalendarEvent }): void => {
-  //       this.events = this.events.filter((iEvent) => iEvent !== event);
-  //       this.handleEvent('Deleted', event);
-  //     },
-  //   },
-  // ];
+      this.updateCalendarEvents();
 
+    })
+    
+  }
 
-  //Aquí se van a pasar la lista de citas programadas
-  // events: CalendarEvent[] = [
-  //   {
-  //     start: subDays(startOfDay(new Date()),1),
-  //     end: addDays(new Date(),1),
-  //     title: 'A 3 day event',
-  //     color: {...colors['blue']},
-  //     allDay: true,
-  //     resizable: {
-  //       beforeStart: true,
-  //       afterEnd: true,
-  //     },
-  //     draggable: true,
-  //   },
-  //   {
-  //     start: startOfDay(new Date()),
-  //     title: 'An event with no end date',
-  //     color: {...colors['blue']},
-  //   },
-  //   {
-  //     start: subDays(endOfMonth(new Date()), 3),
-  //     end: addDays(endOfMonth(new Date()), 3),
-  //     title: 'An long with no end date',
-  //     color: {...colors['blue']},
-  //     allDay: true,
-  //   },
-  //   {
-  //     start: addHours(startOfDay(new Date()), 2),
-  //     end: addHours(new Date(), 2),
-  //     title: 'A draggable and resizable event',
-  //     color: { ...colors['blue'] },
-  //     resizable: {
-  //       beforeStart: true,
-  //       afterEnd: true,
-  //     },
-  //     draggable: true,
-  //   },
-  // ];
+  getCalendarEvents(fecha:string, horario: HorarioOcupadoModel)
+  {
+    const evento: EventInput = {
+      title: horario.Descripcion,
+      start: new Date(fecha + ' ' + horario.HoraInicio),
+      end: new Date(fecha + ' ' + horario.HoraFin),
+    };
+    this.eventosList.push(evento);
+    console.log(this.eventosList);
+  }
 
-  // dayClicked({date, events}: {date: Date; events:CalendarEvent[]}): void {
-  //   if(isSameMonth(date, this.viewDate)) {
-  //     if((isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || events.length === 0)
-  //     {
-  //       this.activeDayIsOpen = false;
-  //     }
-  //     else
-  //     {
-  //       this.activeDayIsOpen = true;
-  //     }
-  //     this.viewDate = date;
-  //   }
-  // }
-
-  // //Cambiar el view
-  // setView(view: CalendarView)
-  // {
-  //   this.view = view;
-  // }
-
-  // closeOpenMonthViewDay() 
-  // {
-  //   this.activeDayIsOpen = false;
-  // }
+  updateCalendarEvents() {
+    this.calendarOptions.set({
+      events: this.eventosList
+    })
+  }
 }
