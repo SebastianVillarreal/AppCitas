@@ -9,14 +9,20 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo:'personas',
+                redirectTo:'citas',
                 pathMatch:'full'
             },
             {
-                path: 'calendario',
-                loadChildren:() => import('../citas/pages/calendario/calendario.routes').then(m => m.routes),
-                title: nameApp + 'Calendario de citas'
+                path: '',
+                loadChildren: () => import('./pages/citas/citas.routes').then(m => m.routes),
+                title: nameApp + 'Citas'
             },
+            {
+                path: 'calendario',
+                loadChildren: () => import('./pages/calendario/calendario.routes').then(m => m.routes),
+                title: nameApp + 'Calendario de citas'
+            }
+
            
         ]
     },

@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StorageService } from 'src/app/shared/services/storage.service';
 import { bgImages, images } from '@Global/constants';
-import { CalendarioComponent } from '../administracion/pages/calendario/calendario.component';
+import { CalendarioComponent } from '../citas/pages/calendario/calendario.component';
 @Component({
   selector: 'app-home',
   standalone: true,

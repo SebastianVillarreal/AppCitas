@@ -25,6 +25,12 @@ export const routes: Routes = [
     title: nameApp + 'Administración'
   },
   {
+    path: 'citas',
+    // canActivate: [AuthGuard],
+    loadChildren: () => import('./modules/citas/citas.routes').then(m => m.routes),
+    title: nameApp + 'Citas'
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
