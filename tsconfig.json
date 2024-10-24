@@ -30,7 +30,8 @@
       "@Models/TipoSistema": ["src/app/core/models/tipos-sistema"],
       "@Models/Usuario": ["src/app/core/models/usuarios"],
       "@Models/HorarioOcupado": ["src/app/core/models/HorariosOcupados"],
-      "@Models/FechaOcupada": ["src/app/core/models/FechasOcupadas"]
+      "@Models/FechaOcupada": ["src/app/core/models/FechasOcupadas"],
+      "@Models/Cita": ["src/app/core/models/citas"],
 
     },
     "outDir": "./dist/out-tsc",

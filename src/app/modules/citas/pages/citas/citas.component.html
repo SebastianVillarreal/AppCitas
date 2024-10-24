@@ -1,1 +1,51 @@
-<p>citas works!</p>
+<div class="w-full p-4 bg-light-bg border border-light-border rounded-lg shadow sm:p-6 md:p-8 dark:bg-dark-bg dark:border-dark-border">
+    <form class="space-y-6" [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+        <h5 class="text-xl font-medium text-light-text dark:text-dark-text">Reservar cita</h5>
+        <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:gap-6">
+            <div class="relative z-0 w-full mb-5 group">
+                <label for="text" class="block mb-2 text-sm font-medium text-light-text dark:text-dark-text">*Cliente</label>
+                <select formControlName="cliente" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                    <option [value]="0" disabled>Clientes</option>
+                    <option [value]="1">Cliente 1</option>
+                </select>
+                <div class="flex justify-center text-sm italic text-sm text-red-600 dark:text-red-500" *ngIf="form.get('idCliente')?.touched && form.get('idCliente')?.invalid">
+                    <p class="text-sm italic text-danger" *ngIf="form.get('idCliente')?.errors?.['min']">Seleccione un tipo*</p>
+                </div>
+            </div>
+            <div class="relative z-0 w-full mb-5 group">
+                <label for="text" class="block mb-2 text-sm font-medium text-light-text dark:text-dark-text">*Fecha</label>
+                <input formControlName="fecha" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Título"/>
+                <div class="flex justify-center text-sm italic text-sm text-red-600 dark:text-red-500" *ngIf="form.get('fecha')?.touched && form.get('fecha')?.invalid">
+                    <p class="text-sm italic text-danger" *ngIf="form.get('fecha')?.errors?.['required']">Seleccione una fecha*</p>
+                </div>
+            </div>
+            <div class="relative z-0 w-full mb-5 group">
+                <label for="text" class="block mb-2 text-sm font-medium text-light-text dark:text-dark-text">*Hora Inicio</label>
+                <input formControlName="horaInicio" type="time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Título"/>
+                <div class="flex justify-center text-sm italic text-sm text-red-600 dark:text-red-500" *ngIf="form.get('horaInicio')?.touched && form.get('horaInicio')?.invalid">
+                    <p class="text-sm italic text-danger" *ngIf="form.get('horaInicio')?.errors?.['required']">Seleccione una hora de inicio*</p>
+                </div>
+            </div>
+            <div class="relative z-0 w-full mb-5 group">
+                <label for="text" class="block mb-2 text-sm font-medium text-light-text dark:text-dark-text">*Hora Fin</label>
+                <input formControlName="horaFin" type="time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Título"/>
+                <div class="flex justify-center text-sm italic text-sm text-red-600 dark:text-red-500" *ngIf="form.get('horaFin')?.touched && form.get('horaFin')?.invalid">
+                    <p class="text-sm italic text-danger" *ngIf="form.get('horaFin')?.errors?.['required']">Seleccione una hora de fin*</p>
+                </div>
+            </div>
+            <div class="relative z-0 w-full mb-5 group">
+                <label for="text" class="block mb-2 text-sm font-medium text-light-text dark:text-dark-text">*Descripción</label>
+                <textarea formControlName="descripcion" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"></textarea>
+                <div class="flex justify-center text-sm italic text-sm text-red-600 dark:text-red-500" *ngIf="form.get('descripcion')?.touched && form.get('descripcion')?.invalid">
+                    <p class="text-sm italic text-danger" *ngIf="form.get('descripcion')?.errors?.['required']">Descripción requerida*</p>
+                    <!-- <p class="text-sm italic text-danger" *ngIf="form.get('descripcion')?.errors?.['maxLength']">Máximo de caracteres 55*</p> -->
+                </div>
+            </div>
+        </div> 
+        <div class="border-t border-light-border dark:border-dark-border">
+            <div class="flex justify-end mt-4">
+                <button type="submit" class="btn">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>

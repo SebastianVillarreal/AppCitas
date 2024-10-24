@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import { citas } from '@EndPoints';
 import { HorarioOcupadoResponse } from '@Models/HorarioOcupado';
 import { FechaOcupadaResponse } from '@Models/FechaOcupada';
+import { CitaInsertRequest } from '@Models/Cita';
 @Injectable({
   providedIn: 'root'
 })
@@ -30,6 +31,17 @@ export class CitasService {
     .pipe(
       map(res => {
         return res;
+      })
+    )
+  }
+
+  InsertCita(cita: CitaInsertRequest): Observable<Boolean>
+  {
+    const httpOptions = { headers: this.headers };
+    return this.http.post<Boolean>(citas.reservarCita, cita, httpOptions)
+      .pipe(
+        map(res => {
+          return res;
       })
     )
   }

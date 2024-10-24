@@ -6,4 +6,5 @@ export const auth = {
 export const citas = {
   fechasOcupadas: `${environment.urlBase}ObtenerFechasConCitasOcupadas`,
   horariosOcupadosPorFecha: `${environment.urlBase}ObtenerHorariosOcupadosPorFecha`,
+  reservarCita: `${environment.urlBase}ReservarCita`
 }

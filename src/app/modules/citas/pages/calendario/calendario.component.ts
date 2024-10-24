@@ -65,7 +65,8 @@ export class CalendarioComponent {
   getFechasOcupadas()
   {
     this.citaService.GetFechasOcupadas().subscribe((data) => {
-      this.fechasOcupadasList = data.response.map(fechaCompleta => fechaCompleta.split(' ')[0]);
+      this.fechasOcupadasList = data.response;
+      console.log(this.fechasOcupadasList)
   
       const requests = this.fechasOcupadasList.map(fecha => this.citaService.GetHorariosOcuapdosPorFecha(fecha));
   
