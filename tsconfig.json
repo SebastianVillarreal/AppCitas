@@ -11,6 +11,7 @@
       "@Constants*": ["src/app/global/constants.ts"],
       "@EndPoints*": ["src/app/global/endpoints.ts"],
       "@Services": ["src/app/core/services"],
+      "@Component/Calendario": ["src/app/modules/citas/pages/calendario/calendario.component.ts"],
       "@Component/Layout": ["src/app/layout/components/layout/layout.component.ts"],
       "@Component/Table": ["src/app/shared/components/custom-table/custom-table.component.ts"],
       "@Component/IconCustom": ["src/app/shared/components/icon-custom/icon-custom.component.ts"],

@@ -1,20 +1,21 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { CitasService } from '@Services';
-
 import { CitaInsertRequest } from '@Models/Cita';
+import { CalendarioComponent } from '@Component/Calendario';
 
 @Component({
   selector: 'app-citas',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [CalendarioComponent,ReactiveFormsModule, NgIf],
   templateUrl: './citas.component.html',
   styleUrl: './citas.component.css'
 })
 export class CitasComponent {
   constructor() { }
+  @ViewChild(CalendarioComponent) calendarioComponent!: CalendarioComponent;
   private fb = inject(FormBuilder)
   private citasService = inject(CitasService)
 
@@ -43,7 +44,9 @@ export class CitasComponent {
       const serviceCall = this.citasService.InsertCita(request);
       serviceCall.subscribe({
         next: (res: any) => {
-          this.resetForm();
+          this.resetForm()
+          this.calendarioComponent.getFechasOcupadas();
+          
         },
         error: (err: any) => {
           console.error(err);

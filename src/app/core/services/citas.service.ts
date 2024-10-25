@@ -45,4 +45,15 @@ export class CitasService {
       })
     )
   }
+
+  DeleteCita(idCita: number): Observable<Boolean>{
+    const httpOptions = { headers: this.headers };
+    const url = `${citas.eliminarCita}?Id=${idCita}`
+    return this.http.delete<Boolean>(url, httpOptions)
+      .pipe(
+        map(res => {
+          return res;
+        })
+    )
+  }
 }
